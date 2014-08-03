@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ReactiveDataSource.h"
 
+@class RADTableViewDataSource;
+
+static CGFloat const RADTableViewDelegateDefaultEstimatedRowHeight = 40.0f;
+
 @interface RADTableViewDelegate : NSObject<UITableViewDelegate>
 
 /// Signal will send a NSIndexPath when a row is selected.
@@ -20,7 +24,7 @@
 /// Signal source for section footer views
 @property (nonatomic, strong) RACSignal *sectionFooterViewSourceSignal;
 
-- (instancetype)initWithTableView:(UITableView *)tableView;
-+ (instancetype)delegateWithTableView:(UITableView *)tableView;
+- (instancetype)initWithTableView:(UITableView *)tableView dataSource:(RADTableViewDataSource *)dataSource;
++ (instancetype)delegateWithTableView:(UITableView *)tableView dataSource:(RADTableViewDataSource *)dataSource;
 
 @end

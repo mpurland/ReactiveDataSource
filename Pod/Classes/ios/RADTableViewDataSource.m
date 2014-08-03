@@ -10,10 +10,10 @@
 
 @interface RADTableViewDataSource ()
 
-@property (nonatomic, copy) NSString *reuseIdentifier;
-@property (nonatomic, strong) NSArray *items;
-@property (nonatomic, strong) NSArray *sections;
-@property (nonatomic, assign) RADTableViewDataSourceType type;
+@property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
+@property (nonatomic, strong, readwrite) NSArray *items;
+@property (nonatomic, strong, readwrite) NSArray *sections;
+@property (nonatomic, assign, readwrite) RADTableViewDataSourceType type;
 
 @end
 
@@ -61,6 +61,17 @@
     return [[[self class] alloc] initWithItemSource:itemSource sectionSource:sectionSource type:type tableView:tableView reuseIdentifier:reuseIdentifier];
 }
 
+- (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.type == RADTableViewDataSourceTypeList) {
+        return self.items[indexPath.row];
+    }
+    else if (self.type == RADTableViewDataSourceTypeSectioned) {
+        NSArray *rowsForSection = self.items[indexPath.section];
+        return rowsForSection[indexPath.row];
+    }
+    return nil;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -85,17 +96,6 @@
     }
     
     return 0;
-}
-
-- (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.type == RADTableViewDataSourceTypeList) {
-        return self.items[indexPath.row];
-    }
-    else if (self.type == RADTableViewDataSourceTypeSectioned) {
-        NSArray *rowsForSection = self.items[indexPath.section];
-        return rowsForSection[indexPath.row];
-    }
-    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
