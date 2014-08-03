@@ -68,8 +68,10 @@
         return self.items.count;
     }
     else if (self.type == RADTableViewDataSourceTypeSectioned) {
-        NSArray *rowsForSection = self.items[section];
-        return rowsForSection.count;
+        if (section < self.items.count) {
+            NSArray *rowsForSection = self.items[section];
+            return rowsForSection.count;
+        }
     }
     return 0;
 }
@@ -112,7 +114,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *sectionTitle = self.sections[section];
+    NSString *sectionTitle = section < self.sections.count ? self.sections[section] : nil;
     
     if (sectionTitle && [sectionTitle isKindOfClass:[NSString class]]) {
         return sectionTitle;
