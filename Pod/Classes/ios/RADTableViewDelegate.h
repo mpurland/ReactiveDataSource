@@ -15,6 +15,9 @@ static CGFloat const RADTableViewDelegateDefaultEstimatedRowHeight = 40.0f;
 
 @interface RADTableViewDelegate : NSObject<UITableViewDelegate>
 
+@property (nonatomic, strong) NSString *headerReuseIdentifier;
+@property (nonatomic, strong) NSString *footerReuseIdentifier;
+
 /// Signal will send a NSIndexPath when a row is selected.
 @property (nonatomic, strong, readonly) RACSignal *didSelectRowSignal;
 

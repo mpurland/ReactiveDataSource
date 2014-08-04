@@ -96,13 +96,35 @@
     [self.didSelectRowSubject sendNext:RACTuplePack(cell, indexPath)];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return self.sectionHeaderViews[section];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return self.sectionFooterViews[section];
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//    UITableViewHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:self.headerReuseIdentifier];
+//    return headerView;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)[self tableView:tableView viewForHeaderInSection:section];
+//    
+//    [headerView setNeedsLayout];
+//    [headerView layoutIfNeeded];
+//    
+//    CGSize size = [headerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    return size.height;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+//    UITableViewHeaderFooterView *footerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:self.footerReuseIdentifier];
+//    return footerView;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+//    UITableViewHeaderFooterView *footerView = (UITableViewHeaderFooterView *)[self tableView:tableView viewForFooterInSection:section];
+//    
+//    [footerView setNeedsLayout];
+//    [footerView layoutIfNeeded];
+//    
+//    CGSize size = [footerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    return size.height;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return RADTableViewDelegateDefaultEstimatedRowHeight;
