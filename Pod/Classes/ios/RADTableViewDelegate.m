@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSArray *sectionFooterViews;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) RADTableViewDataSource *dataSource;
+@property (nonatomic, strong) UITableViewCell<RADTableViewCell> *sizingCell;
 
 @end
 
@@ -40,11 +41,11 @@
 #pragma mark - Properties
 
 - (RACSignal *)didSelectRowSignal {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        self.didSelectRowSubject = [RACSubject subject];
-    });
-    return self.didSelectRowSubject;
+    if (!_didSelectRowSubject) {
+        _didSelectRowSubject = [RACSubject subject];
+    }
+    
+    return _didSelectRowSubject;
 }
 
 - (void)setSectionHeaderViewSourceSignal:(RACSignal *)sectionHeaderViewSourceSignal {
@@ -78,15 +79,13 @@
 }
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath {
-    static UITableViewCell<RADTableViewCell> *sizingCell = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sizingCell = [self.tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForIndexPath:indexPath]];
-    });
+    if (!_sizingCell) {
+        _sizingCell = [self.tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForIndexPath:indexPath]];
+    }
     
     id dataForCell = [self.dataSource dataForRowAtIndexPath:indexPath];
-    [sizingCell prepareToAppear:dataForCell];
-    return [self calculateHeightForConfiguredSizingCell:sizingCell];
+    [_sizingCell prepareToAppear:dataForCell];
+    return [self calculateHeightForConfiguredSizingCell:_sizingCell];
 }
 
 #pragma mark - UITableViewDelegate
@@ -113,7 +112,7 @@
     [headerView layoutIfNeeded];
     
     CGSize size = [headerView.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
-
+    
     return size.height + 4.0f;
 }
 
