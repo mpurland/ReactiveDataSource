@@ -17,6 +17,13 @@
 
 @end
 
+@protocol RADTableViewHeaderFooter <NSObject>
+@required
+
+- (void)prepareToAppearWithTitle:(NSString *)title;
+
+@end
+
 typedef NS_ENUM(NSInteger, RADTableViewDataSourceType) {
     RADTableViewDataSourceTypeList,
     RADTableViewDataSourceTypeSectioned
