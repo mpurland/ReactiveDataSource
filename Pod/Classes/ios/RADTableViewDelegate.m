@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) RADTableViewDataSource *dataSource;
 @property (nonatomic, strong) UITableViewCell<RADTableViewCell> *sizingCell;
+@property (nonatomic, strong) UITableViewHeaderFooterView<RADTableViewHeaderFooter> *sizingSectionHeader;
 
 @end
 
@@ -88,6 +89,24 @@
     return [self calculateHeightForConfiguredSizingCell:_sizingCell];
 }
 
+- (CGFloat)calculateHeightForConfiguredSizingHeader:(UITableViewHeaderFooterView<RADTableViewHeaderFooter> *)sizingSectionHeader {
+    [_sizingSectionHeader setNeedsLayout];
+    [_sizingSectionHeader layoutIfNeeded];
+    CGSize size = [_sizingSectionHeader.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
+    
+    return size.height + 4.0f;
+}
+
+- (CGFloat)heightForSection:(NSInteger)section {
+    if (!_sizingSectionHeader) {
+        _sizingSectionHeader = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:self.headerReuseIdentifier];
+    }
+    
+    NSString *titleForSection = [self.dataSource tableView:self.tableView titleForHeaderInSection:section];
+    [_sizingSectionHeader prepareToAppearWithTitle:titleForSection];
+    return [self calculateHeightForConfiguredSizingHeader:_sizingSectionHeader];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -106,14 +125,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)[self tableView:tableView viewForHeaderInSection:section];
-    
-    [headerView setNeedsLayout];
-    [headerView layoutIfNeeded];
-    
-    CGSize size = [headerView.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
-    
-    return size.height + 4.0f;
+    return [self heightForSection:section];
 }
 
 //
