@@ -63,11 +63,21 @@
 
 - (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.type == RADTableViewDataSourceTypeList) {
-        return self.items[indexPath.row];
+        if (indexPath.row < self.items.count) {
+            return self.items[indexPath.row];
+        }
+        else {
+            return nil;
+        }
     }
     else if (self.type == RADTableViewDataSourceTypeSectioned) {
         NSArray *rowsForSection = self.items[indexPath.section];
-        return rowsForSection[indexPath.row];
+        if (indexPath.row < rowsForSection.count) {
+            return rowsForSection[indexPath.row];
+        }
+        else {
+            return nil;
+        }
     }
     return nil;
 }

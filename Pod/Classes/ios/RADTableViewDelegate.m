@@ -111,7 +111,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [self.didSelectRowSubject sendNext:RACTuplePack(cell, indexPath)];
+    id data = [self.dataSource dataForRowAtIndexPath:indexPath];
+    [self.didSelectRowSubject sendNext:RACTuplePack(cell, indexPath, data)];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
