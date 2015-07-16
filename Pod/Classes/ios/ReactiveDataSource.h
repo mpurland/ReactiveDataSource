@@ -9,5 +9,8 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 
+#import "RADCommon.h"
 #import "RADTableViewDataSource.h"
 #import "RADTableViewDelegate.h"
+#import "RADTableViewController.h"
+#import "RADTableModel.h"

@@ -8,89 +8,98 @@
 
 #import "RADTableViewDataSource.h"
 
-@interface RADTableViewDataSource ()
+static NSString * const RADTableViewDataSourceDefaultReuseIdentifier = @"RADTableViewDataSourceDefaultReuseIdentifier";
 
-@property (nonatomic, copy, readwrite) NSString *reuseIdentifier;
-@property (nonatomic, strong, readwrite) NSArray *items;
-@property (nonatomic, strong, readwrite) NSArray *sections;
-@property (nonatomic, assign, readwrite) RADTableViewDataSourceType type;
+@implementation RADTableReuseIdentifierProvider
 
-@end
-
-@implementation RADTableViewDataSource
-
-- (instancetype)initWithItemSource:(RACSignal *)itemSource sectionSource:(RACSignal *)sectionSource type:(RADTableViewDataSourceType)type tableView:(UITableView *)tableView reuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super init];
     if (!self) {
         return nil;
     }
     
-    self.type = type;
-    self.items = @[];
-    self.sections = nil;
     self.reuseIdentifier = reuseIdentifier;
+    
+    return self;
+}
+
+#pragma mark - RADTableReuseIdentifierProvider
+
+- (NSString *)reuseIdentifierForIndexPath:(NSIndexPath *)indexPath {
+    if (self.reuseIdentifier) {
+        return self.reuseIdentifier;
+    }
+    return nil;
+}
+
+@end
+
+@interface RADTableViewDataSource () {
+    RACDisposable *_reloadDisposable;
+}
+
+@property (nonatomic, strong, readwrite) RADTableModel *model;
+@property (nonatomic, strong, readwrite) UITableView *tableView;
+@property (nonatomic, strong, readwrite) id<RADTableReuseIdentifierProvider> reuseIdentifierProvider;
+
+@end
+
+@implementation RADTableViewDataSource
+
+- (instancetype)initWithTableView:(UITableView *)tableView model:(RADTableModel *)model reuseIdentifierProvider:(id<RADTableReuseIdentifierProvider>)reuseIdentifierProvider {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    self.tableView = tableView;
+    self.model = model;
     self.shouldReloadTableWhenSourceUpdates = YES;
     
-    // Items
-    @weakify(self);
-    RAC(self, items) = [[itemSource ignore: nil] doNext:^(id _) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            @strongify(self);
-            if (self.shouldReloadTableWhenSourceUpdates) {
-                [tableView reloadData];
-            }
-        });
-    }];
-    
-    // Sections
-    RAC(self, sections) = [[sectionSource ignore: nil] doNext:^(id _) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            @strongify(self);
-            if (self.shouldReloadTableWhenSourceUpdates) {
-                [tableView reloadData];
-            }
-        });
-    }];
+    if (!reuseIdentifierProvider) {
+        reuseIdentifierProvider = [[RADTableReuseIdentifierProvider alloc] initWithReuseIdentifier:RADTableViewDataSourceDefaultReuseIdentifier];
+    }
+    self.reuseIdentifierProvider = reuseIdentifierProvider;
     
     tableView.dataSource = self;
     
     return self;
 }
 
-+ (instancetype)dataSourceWithItemSource:(RACSignal *)itemSource sectionSource:(RACSignal *)sectionSource type:(RADTableViewDataSourceType)type tableView:(UITableView *)tableView reuseIdentifier:(NSString *)reuseIdentifier {
-    return [[[self class] alloc] initWithItemSource:itemSource sectionSource:sectionSource type:type tableView:tableView reuseIdentifier:reuseIdentifier];
-}
-
-- (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.type == RADTableViewDataSourceTypeList) {
-        if (indexPath.row < self.items.count) {
-            return self.items[indexPath.row];
-        }
-        else {
-            return nil;
-        }
+- (void)setShouldReloadTableWhenSourceUpdates:(BOOL)shouldReloadTableWhenSourceUpdates {
+    [self willChangeValueForKey:@"shouldReloadTableWhenSourceUpdates"];
+    
+    _shouldReloadTableWhenSourceUpdates = shouldReloadTableWhenSourceUpdates;
+    
+    if (shouldReloadTableWhenSourceUpdates) {
+        // Reload table when source signal updates with non default values
+        @weakify(self);
+        _reloadDisposable = [[[RACSignal combineLatest:@[[RACObserve(self, model.objects) skip:1], [RACObserve(self, model.sections) skip:1]]] takeUntil:[RACSignal merge:@[self.rac_willDeallocSignal, [RACObserve(self, shouldReloadTableWhenSourceUpdates) filter:^BOOL(id value) {
+            return [value isEqualToNumber:@(NO)];
+        }]]]] subscribeNext:^(id _) {
+            @strongify(self);
+            if (self.shouldReloadTableWhenSourceUpdates) {
+                [self.tableView reloadData];
+            }
+        }];
     }
-    else if (self.type == RADTableViewDataSourceTypeSectioned) {
-        NSArray *rowsForSection = self.items[indexPath.section];
-        if (indexPath.row < rowsForSection.count) {
-            return rowsForSection[indexPath.row];
-        }
-        else {
-            return nil;
-        }
+    else {
+        [_reloadDisposable dispose];
+        _reloadDisposable = nil;
     }
-    return nil;
+    
+    [self didChangeValueForKey:@"shouldReloadTableWhenSourceUpdates"];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.type == RADTableViewDataSourceTypeList) {
-        return self.items.count;
+    if (self.model.type == RADTableModelTypeList) {
+        return self.model.objects.count;
     }
-    else if (self.type == RADTableViewDataSourceTypeSectioned) {
-        if (section < self.items.count) {
-            NSArray *rowsForSection = self.items[section];
+    else if (self.model.type == RADTableModelTypeSectioned) {
+        if (section < self.model.sections.count) {
+            NSArray *rowsForSection = self.model.objects[section];
             return rowsForSection.count;
         }
     }
@@ -98,33 +107,34 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.type == RADTableViewDataSourceTypeList) {
+    if (self.model.type == RADTableModelTypeList) {
         return 1;
     }
-    else if (self.type == RADTableViewDataSourceTypeSectioned) {
-        return self.sections.count;
+    else if (self.model.type == RADTableModelTypeSectioned) {
+        return self.model.sections.count;
     }
     
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.reuseIdentifier forIndexPath:indexPath];
+    NSString *reuseIdentifierForIndexPath = [self.reuseIdentifierProvider reuseIdentifierForIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifierForIndexPath forIndexPath:indexPath];
     
-    id data = [self dataForRowAtIndexPath:indexPath];
+    id object = [self.model objectForRowAtIndexPath:indexPath];
     
     if ([cell conformsToProtocol:@protocol(RADTableViewCell)]) {
-        [(id<RADTableViewCell>)cell prepareToAppear:data];
+        [(id<RADTableViewCell>)cell prepareCellWithObject:object];
     }
-    else if ([data isKindOfClass:[NSString class]]) {
-        cell.textLabel.text = data;
+    else if ([object isKindOfClass:[NSString class]]) {
+        cell.textLabel.text = object;
     }
     
     return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *sectionTitle = section < self.sections.count ? self.sections[section] : nil;
+    NSString *sectionTitle = section < self.model.sections.count ? self.model.sections[section] : nil;
     
     if (sectionTitle && [sectionTitle isKindOfClass:[NSString class]]) {
         return sectionTitle;

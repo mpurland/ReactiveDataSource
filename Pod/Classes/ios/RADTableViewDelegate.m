@@ -10,7 +10,6 @@
 
 @interface RADTableViewDelegate ()
 
-@property (nonatomic, strong) RACSubject *didSelectRowSubject;
 @property (nonatomic, strong) NSArray *sectionHeaderViews;
 @property (nonatomic, strong) NSArray *sectionFooterViews;
 @property (nonatomic, strong) UITableView *tableView;
@@ -41,13 +40,13 @@
 
 #pragma mark - Properties
 
-- (RACSignal *)didSelectRowSignal {
-    if (!_didSelectRowSubject) {
-        _didSelectRowSubject = [RACSubject subject];
-    }
-    
-    return _didSelectRowSubject;
-}
+//- (RACSignal *)didSelectRowSignal {
+//    if (!_didSelectRowSubject) {
+//        _didSelectRowSubject = [RACSubject subject];
+//    }
+//    
+//    return _didSelectRowSubject;
+//}
 
 - (void)setSectionHeaderViewSourceSignal:(RACSignal *)sectionHeaderViewSourceSignal {
     if (_sectionHeaderViewSourceSignal != sectionHeaderViewSourceSignal) {
@@ -68,7 +67,7 @@
 }
 
 - (NSString *)reuseIdentifierForIndexPath:(NSIndexPath *)indexPath {
-    return self.dataSource.reuseIdentifier;
+    return [self.dataSource.reuseIdentifierProvider reuseIdentifierForIndexPath:indexPath];
 }
 
 - (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell<RADTableViewCell> *)sizingCell {
@@ -84,9 +83,14 @@
         _sizingCell = [self.tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForIndexPath:indexPath]];
     }
     
-    id dataForCell = [self.dataSource dataForRowAtIndexPath:indexPath];
-    [_sizingCell prepareToAppear:dataForCell];
-    return [self calculateHeightForConfiguredSizingCell:_sizingCell];
+    CGFloat height = UITableViewAutomaticDimension;
+    
+    if ([_sizingCell conformsToProtocol:@protocol(RADTableViewCell)]) {
+        id objectForCell = [self.dataSource.model objectForRowAtIndexPath:indexPath];
+        [_sizingCell prepareCellWithObject:objectForCell];
+        height = [self calculateHeightForConfiguredSizingCell:_sizingCell];
+    }
+    return height;
 }
 
 - (CGFloat)calculateHeightForConfiguredSizingHeader:(UITableViewHeaderFooterView<RADTableViewHeaderFooter> *)sizingSectionHeader {
@@ -102,17 +106,22 @@
         _sizingSectionHeader = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:self.headerReuseIdentifier];
     }
     
-    NSString *titleForSection = [self.dataSource tableView:self.tableView titleForHeaderInSection:section];
-    [_sizingSectionHeader prepareToAppearWithTitle:titleForSection];
-    return [self calculateHeightForConfiguredSizingHeader:_sizingSectionHeader];
+    CGFloat height = UITableViewAutomaticDimension;
+    
+    if ([_sizingSectionHeader conformsToProtocol:@protocol(RADTableViewHeaderFooter)]) {
+        NSString *titleForSection = [self.dataSource tableView:self.tableView titleForHeaderInSection:section];
+        [_sizingSectionHeader prepareToAppearWithTitle:titleForSection];
+        height = [self calculateHeightForConfiguredSizingHeader:_sizingSectionHeader];
+    }
+    return height;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    id data = [self.dataSource dataForRowAtIndexPath:indexPath];
-    [self.didSelectRowSubject sendNext:RACTuplePack(cell, indexPath, data)];
+    id objectForCell = [self.dataSource.model objectForRowAtIndexPath:indexPath];
+    [self.didSelectRow execute:RACTuplePack(cell, indexPath, objectForCell)];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

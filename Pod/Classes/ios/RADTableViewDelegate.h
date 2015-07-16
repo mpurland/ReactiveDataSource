@@ -18,8 +18,8 @@ static CGFloat const RADTableViewDelegateDefaultEstimatedRowHeight = 40.0f;
 @property (nonatomic, strong) NSString *headerReuseIdentifier;
 @property (nonatomic, strong) NSString *footerReuseIdentifier;
 
-/// Signal will send a NSIndexPath when a row is selected.
-@property (nonatomic, strong, readonly) RACSignal *didSelectRowSignal;
+/// Command to execute when a new row is selected. The command input will be a tuple with cell, indexPath, and the object.
+@property (nonatomic, strong) RACCommand *didSelectRow;
 
 /// Signal source for section header views
 @property (nonatomic, strong) RACSignal *sectionHeaderViewSourceSignal;
@@ -27,6 +27,7 @@ static CGFloat const RADTableViewDelegateDefaultEstimatedRowHeight = 40.0f;
 /// Signal source for section footer views
 @property (nonatomic, strong) RACSignal *sectionFooterViewSourceSignal;
 
+RAD_PRIVATE_INIT;
 - (instancetype)initWithTableView:(UITableView *)tableView dataSource:(RADTableViewDataSource *)dataSource;
 + (instancetype)delegateWithTableView:(UITableView *)tableView dataSource:(RADTableViewDataSource *)dataSource;
 

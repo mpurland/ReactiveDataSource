@@ -24,6 +24,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		934D01A85D3D4FAE9C6481F6 /* libPods-ReactiveDataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE984D8012274C73BECAECF2 /* libPods-ReactiveDataSource.a */; };
+		DE0CCE6E1AC3864400A7007E /* RADTableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0CCE6D1AC3864400A7007E /* RADTableModel.m */; };
 		DE8907211988BF3C00FFA178 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = DE89071E1988BF3C00FFA178 /* .gitkeep */; };
 		DE8907221988BF3C00FFA178 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = DE8907201988BF3C00FFA178 /* .gitkeep */; };
 /* End PBXBuildFile section */
@@ -39,7 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0BDE66AB110944788EEA19D2 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
+		0BD154A21E044FFEF4C4624D /* Pods-ReactiveDataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveDataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveDataSource/Pods-ReactiveDataSource.release.xcconfig"; sourceTree = "<group>"; };
+		2A6A15E970DF8989341B86C4 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
+		386D35D90760CD1BAC1A10E4 /* Pods-ReactiveDataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveDataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveDataSource/Pods-ReactiveDataSource.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ReactiveDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -61,10 +64,15 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		79A1DC76285A7C355D805C85 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		7A94578EB8114384860D0104 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		8B20C4EC22194264A5C71850 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C67D0D93B07494C81251556 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D0B593CCBDCE4A42A7BD78E4 /* ReactiveDataSource.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ReactiveDataSource.podspec; path = ../ReactiveDataSource.podspec; sourceTree = "<group>"; };
+		DE0CCE631AC3823F00A7007E /* RADTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RADTableViewController.h; sourceTree = "<group>"; };
+		DE0CCE641AC3823F00A7007E /* RADTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RADTableViewController.m; sourceTree = "<group>"; };
+		DE0CCE6C1AC3864400A7007E /* RADTableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RADTableModel.h; sourceTree = "<group>"; };
+		DE0CCE6D1AC3864400A7007E /* RADTableModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RADTableModel.m; sourceTree = "<group>"; };
 		DE89071E1988BF3C00FFA178 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		DE8907201988BF3C00FFA178 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		DE89072C1988C2AA00FFA178 /* RADTableViewDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RADTableViewDataSource.h; sourceTree = "<group>"; };
@@ -73,7 +81,7 @@
 		DE8907301988C61E00FFA178 /* RADTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RADTableViewDelegate.h; sourceTree = "<group>"; };
 		DE8907311988C61E00FFA178 /* RADTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RADTableViewDelegate.m; sourceTree = "<group>"; };
 		DE984D8012274C73BECAECF2 /* libPods-ReactiveDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactiveDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FBFEA1B62F064D73BBF0CBD5 /* Pods-ReactiveDataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveDataSource.xcconfig"; path = "Pods/Pods-ReactiveDataSource.xcconfig"; sourceTree = "<group>"; };
+		DEDA00E51AC9D10A0086D2FB /* RADCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RADCommon.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,8 +119,7 @@
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				FBFEA1B62F064D73BBF0CBD5 /* Pods-ReactiveDataSource.xcconfig */,
-				0BDE66AB110944788EEA19D2 /* Pods-Tests.xcconfig */,
+				BA23009CFF1B9230E779BEEF /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -193,6 +200,17 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		BA23009CFF1B9230E779BEEF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				386D35D90760CD1BAC1A10E4 /* Pods-ReactiveDataSource.debug.xcconfig */,
+				0BD154A21E044FFEF4C4624D /* Pods-ReactiveDataSource.release.xcconfig */,
+				79A1DC76285A7C355D805C85 /* Pods-Tests.debug.xcconfig */,
+				2A6A15E970DF8989341B86C4 /* Pods-Tests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		DE89071C1988BF3C00FFA178 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,6 +247,11 @@
 				DE89072D1988C2AA00FFA178 /* RADTableViewDataSource.m */,
 				DE8907301988C61E00FFA178 /* RADTableViewDelegate.h */,
 				DE8907311988C61E00FFA178 /* RADTableViewDelegate.m */,
+				DE0CCE631AC3823F00A7007E /* RADTableViewController.h */,
+				DE0CCE641AC3823F00A7007E /* RADTableViewController.m */,
+				DE0CCE6C1AC3864400A7007E /* RADTableModel.h */,
+				DE0CCE6D1AC3864400A7007E /* RADTableModel.m */,
+				DEDA00E51AC9D10A0086D2FB /* RADCommon.h */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -353,7 +376,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CABEC91C38DA449DB4C7C7B2 /* Check Pods Manifest.lock */ = {
@@ -398,7 +421,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-ReactiveDataSource-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactiveDataSource/Pods-ReactiveDataSource-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -410,6 +433,7 @@
 			files = (
 				6003F59E195388D20070C39A /* RADAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* RADViewController.m in Sources */,
+				DE0CCE6E1AC3864400A7007E /* RADTableModel.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -542,7 +566,7 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBFEA1B62F064D73BBF0CBD5 /* Pods-ReactiveDataSource.xcconfig */;
+			baseConfigurationReference = 386D35D90760CD1BAC1A10E4 /* Pods-ReactiveDataSource.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -556,7 +580,7 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBFEA1B62F064D73BBF0CBD5 /* Pods-ReactiveDataSource.xcconfig */;
+			baseConfigurationReference = 0BD154A21E044FFEF4C4624D /* Pods-ReactiveDataSource.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -570,7 +594,7 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BDE66AB110944788EEA19D2 /* Pods-Tests.xcconfig */;
+			baseConfigurationReference = 79A1DC76285A7C355D805C85 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactiveDataSource.app/ReactiveDataSource";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -593,7 +617,7 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BDE66AB110944788EEA19D2 /* Pods-Tests.xcconfig */;
+			baseConfigurationReference = 2A6A15E970DF8989341B86C4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactiveDataSource.app/ReactiveDataSource";
 				FRAMEWORK_SEARCH_PATHS = (

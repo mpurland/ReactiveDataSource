@@ -8,12 +8,33 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ReactiveDataSource.h"
+#import "RADCommon.h"
+#import "RADTableModel.h"
+
+//@protocol RADMapping <NSObject>
+//
+//- (NSString *)reuseIdentifier;
+//
+//@end
+
+@protocol RADTableReuseIdentifierProvider <NSObject>
+
+- (NSString *)reuseIdentifierForIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
+@interface RADTableReuseIdentifierProvider : NSObject<RADTableReuseIdentifierProvider>
+
+@property (nonatomic, strong) NSString *reuseIdentifier;
+
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+@end
 
 @protocol RADTableViewCell <NSObject>
 @required
 
-- (void)prepareToAppear:(id)data;
+- (void)prepareCellWithObject:(id)object;
 
 @end
 
@@ -24,25 +45,16 @@
 
 @end
 
-typedef NS_ENUM(NSInteger, RADTableViewDataSourceType) {
-    RADTableViewDataSourceTypeList,
-    RADTableViewDataSourceTypeSectioned
-};
-
 @interface RADTableViewDataSource : NSObject<UITableViewDataSource>
 
-@property (nonatomic, copy, readonly) NSString *reuseIdentifier;
-@property (nonatomic, strong, readonly) NSArray *items;
-@property (nonatomic, strong, readonly) NSArray *sections;
-@property (nonatomic, assign, readonly) RADTableViewDataSourceType type;
+@property (nonatomic, strong, readonly) RADTableModel *model;
+@property (nonatomic, strong, readonly) UITableView *tableView;
+@property (nonatomic, strong, readonly) id<RADTableReuseIdentifierProvider> reuseIdentifierProvider;
 
-/// Reload table data when source signal sends new data
+/// Reload table data when model is updated
 @property (nonatomic, assign) BOOL shouldReloadTableWhenSourceUpdates;
 
-- (instancetype)initWithItemSource:(RACSignal *)itemSource sectionSource:(RACSignal *)sectionSource type:(RADTableViewDataSourceType)type tableView:(UITableView *)tableView reuseIdentifier:(NSString *)reuseIdentifier;
-
-+ (instancetype)dataSourceWithItemSource:(RACSignal *)itemSource sectionSource:(RACSignal *)sectionSource type:(RADTableViewDataSourceType)type tableView:(UITableView *)tableView reuseIdentifier:(NSString *)reuseIdentifier;
-
-- (id)dataForRowAtIndexPath:(NSIndexPath *)indexPath;
+RAD_PRIVATE_INIT;
+- (instancetype)initWithTableView:(UITableView *)tableView model:(RADTableModel *)model reuseIdentifierProvider:(id<RADTableReuseIdentifierProvider>)reuseIdentifierProvider;
 
 @end
